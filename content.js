@@ -1,5 +1,9 @@
 var currentUrl = window.location.href;
-if (/^https?:\/\/(book|movie)\.douban\.com\//.test(currentUrl)) {
+if (
+  /^https?:\/\/(book|movie|music)\.douban\.com\/subject\/(\d+)\//.test(
+    currentUrl
+  )
+) {
   var parentElement = document.getElementById("interest_sect_level");
   var thirdLink = parentElement.querySelectorAll("a")[2];
   var divElement = parentElement.querySelector("div");
@@ -21,14 +25,4 @@ if (/^https?:\/\/(book|movie)\.douban\.com\//.test(currentUrl)) {
     new DOMParser().parseFromString(newLink, "text/html").body.firstChild,
     divElement
   );
-} else {
-  document.addEventListener("click", function (event) {
-    if (event.target.tagName === "A") {
-      var url = event.target.href;
-      if (/^https?:\/\/(book|movie)\.douban\.com\//.test(url)) {
-        event.preventDefault();
-        chrome.runtime.sendMessage({ url: url });
-      }
-    }
-  });
 }
