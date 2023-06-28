@@ -1,10 +1,16 @@
 // ==UserScript==
-// @name         R-NeoDB
+// @name         豆瓣条目跳转NeoDB条目
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!*
 // @author       You
-// @match         *://*/*
+// @match        *://m.douban.com/*/subject/*
+// @match        *://*.douban.com/subject/*
+// @match        *://neodb.social/movie/*
+// @match        *://neodb.social/book/*
+// @match        *://neodb.social/tv/season/*
+// @license   MIT
+// @match        *://neodb.social/music/*
 // @icon         https://neodb.social/static/img/logo_square.f6d14b9fa477.jpg
 // @grant        none
 // ==/UserScript==
@@ -13,13 +19,17 @@
   "use strict";
 
   var currentUrl = window.location.href;
-  if (/^https?:\/\/m\.douban\.com\/(book|movie)\/.*/.test(currentUrl)) {
+  if (/^https?:\/\/m\.douban\.com\/(book|movie|music)\/.*/.test(currentUrl)) {
     var type = "";
-    var parentElement = document.querySelector(".sub-title");
     if (currentUrl[21] == "b") {
       type = currentUrl.substring(21, 25);
     } else if (currentUrl[21] == "m") {
       type = currentUrl.substring(21, 26);
+    }
+    if (type == "music") {
+      var parentElement = document.querySelector(".title");
+    } else {
+      var parentElement = document.querySelector(".sub-title");
     }
     var gotoURl =
       "https://neodb.social/search/?q=" +
